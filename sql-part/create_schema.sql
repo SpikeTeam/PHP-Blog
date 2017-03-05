@@ -4,7 +4,7 @@ CREATE SCHEMA `php_blog` DEFAULT CHARACTER SET utf8 ;
 ------ Create table User
 CREATE TABLE `php_blog`.`user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(128) NOT NULL,
+  `username` VARCHAR(128) NOT NULL UNIQUE,
   `password` VARCHAR(128) NOT NULL,
   `first_name` VARCHAR(32) NULL,
   `last_name` VARCHAR(32) NULL,
@@ -18,7 +18,7 @@ DEFAULT CHARACTER SET = utf8;
 ------ Create table Post
 CREATE TABLE `php_blog`.`post` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `title` VARCHAR(32) NOT NULL,
+  `title` VARCHAR(32) NOT NULL UNIQUE,
   `about` VARCHAR(64) NOT NULL,
   `date_posted` DATETIME NOT NULL,
   `content` TEXT NOT NULL
@@ -29,7 +29,7 @@ DEFAULT CHARACTER SET = utf8;
 ------ Create table Category
 CREATE TABLE `php_blog`.`category`(
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(32) NOT NULL
+  `name` VARCHAR(32) NOT NULL UNIQUE
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -46,7 +46,7 @@ DEFAULT CHARACTER SET = utf8;
 ------ Create table Tag
 CREATE TABLE `php_blog`.`tag`(
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(32) NOT NULL
+  `name` VARCHAR(32) NOT NULL UNIQUE
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
