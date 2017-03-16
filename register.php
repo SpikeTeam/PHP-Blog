@@ -11,6 +11,12 @@ if(isset($_POST['register'])){
     $email = $_POST['email'];
 
     $avatar = $_FILES['avatar'];
+
+    $user = new \Services\User\UserService($db);
+
+    if($user->register($_POST)){
+        header('Location: login.php');
+    }
 }
 
 $app->loadTemplate('registration_frontend');
