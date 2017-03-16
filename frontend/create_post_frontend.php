@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Registration</title>
+    <title>Create Post</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -53,13 +53,13 @@
                     <a href="index.php">Home</a>
                 </li>
                 <li>
-                    <a href="registration_frontend.php">Sign up</a>
+                    <a href="register.php">Sign up</a>
                 </li>
                 <li>
                     <a href="index.php">Sign in</a>
                 </li>
                 <li>
-                    <a href="index.php">About</a>
+                    <a href="about.php">About</a>
                 </li>
             </ul>
         </div>
@@ -79,47 +79,23 @@
                 <div class="col-md-4">
                     <section class="login-form">
 
-                        <form method="post" action="#" role="login" id="registrationForm" >
-                            <img src="frontend/img/icon-login.png" class="img-responsive" alt=""/>
+                        <form method="post">
                             <div>
-                                <input type="text" name="username" id="username" placeholder="Username" required
-                                   class="form-control input-lg"/>
-                                <p id="usernameValid" class="error-msg"></p>
+                                Create Post
                             </div>
                             <div>
-                                <input type="password" name="password" class="form-control input-lg" id="password"
-                                   placeholder="Password"  required />
-                                <p id="passwordValid" class="error-msg"></p>
+                                <input type="text" name="title" id="title" placeholder="Title" required
+                                       class="form-control input-lg"/>
                             </div>
                             <div>
-                                <input type="password" name="passwordConfirm" class="form-control input-lg"
-                                   id="passwordConf"  placeholder="Password Confirm"  required />
-                                <p id="passwordConfirmValid" class="error-msg"></p>
+                                <input type="text" name="about" class="form-control input-lg" id="about"
+                                       placeholder="Intro"  required />
                             </div>
                             <div>
-                                <input type="text" name="firstName" class="form-control input-lg"
-                                   id="firstName"  placeholder="First name"  required />
+                                <textarea name="content" id="content" cols="20" rows="10"
+                                          class="form-control input-lg" placeholder="Content"></textarea>
                             </div>
-                            <div>
-                                <input type="text" name="lastName" class="form-control input-lg"
-                                   id="lastName"  placeholder="Last name"  required />
-                            </div>
-                            <div>
-                                <textarea name="personalInfo" id="personalInfo" cols="30" rows="10"
-                                      class="form-control input-lg" placeholder="Personal Info"></textarea>
-                            </div>
-                            <div>
-                                <input type="email" name="email" class="form-control input-lg"
-                                   id="email" placeholder="Email" />
-                                <p id="emailValid" class="error-msg"></p>
-                            </div>
-                            <div>
-                                <label for="avatar">Upload avatar: </label>
-                            <input type="file" name="avatar" id="avatar" />
-                            </div>
-
-                            <div class="pwstrength_viewport_progress"></div>
-                            <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign up</button>
+                            <button type="submit" name="createPost" class="btn btn-md btn-primary btn-block">Add</button>
                         </form>
 
                     </section>
@@ -138,8 +114,5 @@
         </div>
     </div>
 </header>
-
-<script src="js/registration.js"></script>
-
 </body>
 </html>
