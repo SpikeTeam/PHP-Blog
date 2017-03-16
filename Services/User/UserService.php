@@ -5,19 +5,28 @@ namespace Services\User;
 
 use Adapter\IDataBase;
 use Models\User;
+use Services\Encryption\BCryptService;
 
 class UserService implements IUserService
 {
     private $db;
+    private $encrypt;
 
     public function __construct(IDataBase $db)
     {
         $this->db = $db;
+        $this->encrypt = new BCryptService();
     }
 
-    public function register($username, $password, $firstName, $lastName,
-                             $email, $personalInfo, $profilePic): bool
+    public function register($params = []): bool
     {
+        $isValid = $this->isValidData($params);
+
+        if (!$isValid)
+            return false;
+
+        $passwordHash = $this->encrypt->encrypt($_POST['password']);
+
         $stmt = $this->db->prepare("INSERT INTO `user`(
                                       `username`, `password`,
                                       `first_name`, `last_name`,
@@ -26,10 +35,11 @@ class UserService implements IUserService
                                     )
                                     VALUES(?, ?, ?, ?, ?, ?, ?);");
 
-        return $stmt->execute([$username, $password, $firstName, $lastName, $email, $personalInfo, $profilePic]);
+        return $stmt->execute([$_POST['username'], $passwordHash, $_POST['firstName'],
+            $_POST['lastName'], $_POST['email'], $_POST['personalInfo'], null]);
     }
 
-    public function login($username, $passwordHash)
+    public function login($username, $password)
     {
         $stmt = $this->db->prepare("SELECT id, username, password
                                     FROM `user`
@@ -42,7 +52,7 @@ class UserService implements IUserService
             throw new \Exception("Username does not exist!");
         }
 
-        if($user['password'] != $passwordHash){
+        if(!$this->encrypt->isValid($user['password'], $password)){
             throw new \Exception("Password mismatch");
         }
 
@@ -57,9 +67,18 @@ class UserService implements IUserService
         return $stmt->fetchRow();
     }
 
-    public function isPasswordMatch($password, $confirmPassword): bool
+    private function isValidData($params = []) : bool
     {
-        return $password == $confirmPassword;
-    }
+        if(preg_match("[ ]", $params['username']))
+            return false;
 
+        if(($params['password'] != $params['passwordConfirm']) ||
+            (preg_match("[ ]", $params['password'])))
+            return false;
+
+        if(!filter_var($params['email'], FILTER_VALIDATE_EMAIL))
+            return false;
+
+        return true;
+    }
 }
