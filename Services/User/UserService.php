@@ -18,7 +18,7 @@ class UserService implements IUserService
         $this->encrypt = new BCryptService();
     }
 
-    public function register($params = []): bool
+    public function register($params = [], $avatarUrl): bool
     {
         $isValid = $this->isValidData($params);
 
@@ -35,8 +35,16 @@ class UserService implements IUserService
                                     )
                                     VALUES(?, ?, ?, ?, ?, ?, ?);");
 
-        return $stmt->execute([$_POST['username'], $passwordHash, $_POST['firstName'],
-            $_POST['lastName'], $_POST['email'], $_POST['personalInfo'], null]);
+        try {
+            $isRegister = $stmt->execute([$_POST['username'], $passwordHash, $_POST['firstName'],
+                $_POST['lastName'], $_POST['email'], $_POST['personalInfo'], $avatarUrl]);
+
+            return $isRegister;
+        } catch (\Exception $e){
+            $_SESSION['errorMsg'] = $e->getMessage();
+        }
+
+        return false;
     }
 
     public function login($username, $password)

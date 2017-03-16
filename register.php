@@ -10,11 +10,15 @@ if(isset($_POST['register'])){
     $personalInfo = $_POST['personalInfo'];
     $email = $_POST['email'];
 
-    $avatar = $_FILES['avatar'];
+    $avatarUrl = null;
+    if($_FILES['avatar']['name'] != '') {
+        $uploadService = new \Services\Upload\UploadService();
+        $avatarUrl = $uploadService->upload($_FILES['avatar'], 'pictures');
+    }
 
     $user = new \Services\User\UserService($db);
 
-    if($user->register($_POST)){
+    if($user->register($_POST, $avatarUrl)){
         header('Location: login.php');
     }
 }

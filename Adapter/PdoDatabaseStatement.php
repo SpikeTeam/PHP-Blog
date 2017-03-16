@@ -16,6 +16,12 @@ class PdoDatabaseStatement implements  IDataBaseStatement
 
     public function execute(array $params = [])
     {
+        try {
+            $this->statement->execute($params);
+        } catch (\Exception $e){
+            throw new \Exception("The username is already exist.");
+        }
+
         return $this->statement->execute($params);
     }
 
