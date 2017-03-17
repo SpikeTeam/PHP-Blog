@@ -3,6 +3,8 @@
 namespace Service\Post;
 
 
+use Adapter\IDataBase;
+
 interface IPostService
 {
     public function __construct(IDataBase $db);
