@@ -3,6 +3,6 @@ require_once('app.php');
 
 $postService = new \Service\Post\PostService($db);
 
-$test = $postService->getPosts(5);
+$test = $postService->getPosts();
 $data = $test;
-$app->loadTemplate('index_frontend', $data);
+$app->loadTemplate('all_posts_frontend', $data);
