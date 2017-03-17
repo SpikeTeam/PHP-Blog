@@ -35,16 +35,20 @@ class UserService implements IUserService
                                     )
                                     VALUES(?, ?, ?, ?, ?, ?, ?);");
 
+        $isRegister = false;
         try {
             $isRegister = $stmt->execute([$_POST['username'], $passwordHash, $_POST['firstName'],
                 $_POST['lastName'], $_POST['email'], $_POST['personalInfo'], $avatarUrl]);
 
-            return $isRegister;
+
         } catch (\Exception $e){
+            if(intval($e->getCode()) == 23000)
+                return true;
+
             $_SESSION['errorMsg'] = $e->getMessage();
         }
 
-        return false;
+        return $isRegister;
     }
 
     public function login($username, $password)
@@ -95,9 +99,6 @@ class UserService implements IUserService
 
         $this->getCountPosts();
         $this->getCountComments();
-
-        var_dump($_SESSION);
-        die;
     }
 
     private function isValidData($params = []) : bool
@@ -133,6 +134,7 @@ class UserService implements IUserService
                                     WHERE `comment`.`user_id` = ?;");
 
         $stmt->execute([$_SESSION['id']]);
+
         $_SESSION['countComments'] = $stmt->fetchRow();
     }
 }
