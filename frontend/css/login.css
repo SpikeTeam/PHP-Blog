@@ -66,6 +66,9 @@ form[role=login] > div {
 }
 
 .error-msg{
+    margin-top: -10px;
+    margin-bottom: 5px;
+    float: left;
     font-size: 15px;
     color: red;
 }
