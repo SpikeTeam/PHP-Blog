@@ -10,7 +10,7 @@ class User
     private $email;
     private $fullName;
     private $personalInfo;
-    private $profilePic;
+    private $profileUrl;
 
     public function getId()
     {
@@ -72,13 +72,13 @@ class User
         $this->personalInfo = $personalInfo;
     }
 
-    public function getProfilePic()
+    public function getProfileUrl()
     {
-        return $this->profilePic;
+        return $this->profileUrl;
     }
 
-    public function setProfilePic($profilePic)
+    public function setProfileUrl($profileUrl)
     {
-        $this->profilePic = $profilePic;
+        $this->profileUrl = $profileUrl;
     }
 }

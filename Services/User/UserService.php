@@ -49,22 +49,32 @@ class UserService implements IUserService
 
     public function login($username, $password)
     {
-        $stmt = $this->db->prepare("SELECT id, username, password
+        $stmt = $this->db->prepare("SELECT 
+                                      `id`, `username`, `password` as `passwordHash`,
+                                      CONCAT_WS(' ', `first_name`, `last_name`) AS `fullName`,
+                                      `email`, `personal_info` AS `personalInfo`,
+                                      `profile_picture` AS `profileUrl`
                                     FROM `user`
-                                    WHERE `username` = ?");
+                                    WHERE `username` = ?;");
 
         $stmt->execute([$username]);
-        $user = $stmt->fetchRow();
+
+        /**
+         * @var User
+         */
+        $user = $stmt->fetchObject(User::class);
 
         if(!$user){
             throw new \Exception("Username does not exist!");
         }
 
-        if(!$this->encrypt->isValid($user['password'], $password)){
+        if(!$this->encrypt->isValid($user->getPasswordHash(), $password)){
             throw new \Exception("Password mismatch");
         }
 
-        return $user['id'];
+        $this->enterInfoSession($user);
+
+        return $user->getId();
     }
 
     public function exist($username): bool
@@ -73,6 +83,21 @@ class UserService implements IUserService
         $stmt->execute([$username]);
 
         return $stmt->fetchRow();
+    }
+
+    private function enterInfoSession(User $user)
+    {
+        $_SESSION['username'] = $user->getUsername();
+        $_SESSION['fullName'] = $user->getFullName();
+        $_SESSION['email'] = $user->getEmail();
+        $_SESSION['personalInfo'] = $user->getPersonalInfo();
+        $_SESSION['profileUrl'] = $user->getProfileUrl();
+
+        $this->getCountPosts();
+        $this->getCountComments();
+
+        var_dump($_SESSION);
+        die;
     }
 
     private function isValidData($params = []) : bool
@@ -88,5 +113,26 @@ class UserService implements IUserService
             return false;
 
         return true;
+    }
+
+    // get the count of the created post by this user
+    private function getCountPosts()
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) AS `countPosts`
+                            FROM `post`
+                            WHERE `post`.`user_id` = ?; ");
+
+        $stmt->execute([$_SESSION['id']]);
+        $_SESSION['countPosts'] = $stmt->fetchRow();
+    }
+
+    private function getCountComments()
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) AS `countComments`
+                                    FROM `comment`
+                                    WHERE `comment`.`user_id` = ?;");
+
+        $stmt->execute([$_SESSION['id']]);
+        $_SESSION['countComments'] = $stmt->fetchRow();
     }
 }
