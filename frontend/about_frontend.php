@@ -12,13 +12,13 @@
     <title>Clean Blog - About</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="frontend/css/clean-blog.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="frontend/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
           type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
@@ -45,23 +45,23 @@
                 <span class="sr-only">Toggle navigation</span>
                 Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="index_frontend.php">Start Bootstrap</a>
+            <a class="navbar-brand" href="index.php">Team Spike</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="index_frontend.php">Home</a>
+                    <a href="index.php">Home</a>
                 </li>
                 <li>
-                    <a href="about_frontend.php">About</a>
+                    <a href="about.php">About</a>
                 </li>
                 <li>
-                    <a href="post_frontend.php">Sample Post</a>
+                    <a href="post.php">Sample Post</a>
                 </li>
                 <li>
-                    <a href="contact_frontend.php">Contact</a>
+                    <a href="contact.php">Contact</a>
                 </li>
             </ul>
         </div>
@@ -72,7 +72,7 @@
 
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('img/about-bg.jpg')">
+<header class="intro-header" style="background-image: url('frontend/img/about-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

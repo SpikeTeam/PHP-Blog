@@ -1,3 +1,4 @@
+<?php /** @var $data \Models\AllPosts */ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,15 +13,15 @@
     <title>Home</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!--Login Form CSS/Update -->
-    <link href="css/login.css" rel="stylesheet">
+    <link href="frontend/css/login.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="frontend/css/clean-blog.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="frontend/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
           type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
@@ -36,7 +37,6 @@
 </head>
 
 <body>
-
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
@@ -47,23 +47,26 @@
                 <span class="sr-only">Toggle navigation</span>
                 Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="index_frontend.php">Spike team</a>
+            <a class="navbar-brand" href="index.php">Spike team</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="index_frontend.php">Home</a>
+                    <a href="index.php">Home</a>
                 </li>
                 <li>
-                    <a href="registration_frontend.php">Sign up</a>
+                    <a href="register.php">Sign up</a>
                 </li>
                 <li>
-                    <a href="index_frontend.php">Sign in</a>
+                    <a href="login.php">Sign in</a>
                 </li>
                 <li>
-                    <a href="about_frontend.php">About</a>
+                    <a href = "create_post.php">Create Post</a>
+                </li>
+                <li>
+                    <a href="about.php">About</a>
                 </li>
             </ul>
         </div>
@@ -74,7 +77,7 @@
 
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('img/home-bg2.jpg')">
+<header class="intro-header" style="background-image: url('frontend/img/home-bg2.jpg')">
     <div class="container">
 
         <div class="container">
@@ -86,7 +89,7 @@
                     <section class="login-form">
 
                         <form method="post" action="#" role="login">
-                            <img src="img/icon-login.png" class="img-responsive" alt=""/>
+                            <img src="frontend/img/icon-login.png" class="img-responsive" alt=""/>
                             <input type="text" name="username" placeholder="Username" required
                                    class="form-control input-lg"/>
                             <input type="password" class="form-control input-lg" id="password" placeholder="Password"
@@ -121,51 +124,20 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 1
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Subtitel/Content
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 2
-                    </h2>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 18, 2014</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 3
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Content
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 4
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Content
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on July 8, 2014</p>
-            </div>
-            <hr>
+            <?php foreach ($data->getPosts() as $post): ?>
+                <div class="post-preview">
+                    <a href="post.php?postId=<?=$post->getId();?>">
+                        <h2 class="post-title">
+                            <?= $post->getTitle();?>
+                        </h2>
+                        <h3 class="post-subtitle">
+                           <?= $post->getAbout(); ?>
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by <a href="#"> <?= $post->getUserId(); ?></a> on <?= $post->getDatePosted()?></p>
+                </div>
+                <hr>
+            <?php endforeach; ?>
             <!-- Pager -->
             <ul class="pager">
                 <li class="next">
