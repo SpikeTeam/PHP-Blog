@@ -25,6 +25,19 @@ class PostService implements IPostService
         $datePosted = date("Y/m/d H:i:s");
         $userId = $_SESSION['id'];
         $categoryId = 1;
+        $title = trim($title);
+        if(strlen($title)<5){
+            $_SESSION['errorMsg'] = "Title length must be at least 5 characters";
+            return false;
+        }
+        if(strlen($about)<10){
+            $_SESSION['errorMsg'] = "Intro length must be at least 10 characters";
+            return false;
+        }
+        if(strlen($content)<20){
+            $_SESSION['errorMsg'] = "Intro length must be at least 20 characters";
+            return false;
+        }
         $query = "INSERT INTO `post` (
                                     `title`, 
                                     `about`,
@@ -43,6 +56,7 @@ class PostService implements IPostService
                                     );";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$title, $about, $content, $datePosted, $userId, $categoryId]);
+        return true;
     }
 
     public function getPosts($limit = null)
@@ -50,13 +64,12 @@ class PostService implements IPostService
 
         $data = new Posts();
 
-        $stmt = $this->db->prepare("SELECT id, title, about, content, user_id, date_posted  FROM post ORDER BY date_posted DESC");
+        $stmt = $this->db->prepare("SELECT id, title, about, content, user_id, date_posted  FROM post WHERE deleted_on is NULL ORDER BY date_posted DESC ");
         $stmt->execute();
-
         $callable = function () use ($stmt, $limit) {
             $br = 0;
             while ($post = $stmt->fetchObject(Post::class)) {
-                if($br++ === $limit) break;
+                if ($br++ === $limit) break;
                 $post->setAuthor($this->getUsername($post->getUserId()));
                 yield $post;
             }
@@ -65,7 +78,7 @@ class PostService implements IPostService
         return $data;
     }
 
-    public function getPost($id)
+    public function getPost($id): Post
     {
         $stmt = $this->db->prepare("SELECT id, title, about, content, user_id, date_posted FROM post WHERE id = ?");
         $stmt->execute([$id]);
@@ -74,7 +87,9 @@ class PostService implements IPostService
         $data->setAuthor($this->getUsername($data->getUserId()));
         return $data;
     }
-    public function getUsername($id){
+
+    public function getUsername($id)
+    {
         $stmt = $this->db->prepare("SELECT username FROM user WHERE id =?");
         $stmt->execute([$id]);
         $username = $stmt->fetchRow();
@@ -82,4 +97,40 @@ class PostService implements IPostService
         return $username;
     }
 
+    public function editPost($title, $about, $content, $id)
+    {
+        if(strlen($title)<5){
+            $_SESSION['errorMsg'] = "Title length must be at least 5 characters";
+            return false;
+        }
+        if(strlen($about)<10){
+            $_SESSION['errorMsg'] = "Intro length must be at least 10 characters";
+            return false;
+        }
+        if(strlen($content)<20){
+            $_SESSION['errorMsg'] = "Intro length must be at least 20 characters";
+            return false;
+        }
+        $query = "UPDATE `post` SET 
+                                    `title` = ?, 
+                                    `about` = ?,
+                                    `content` = ?
+                                                                              
+                                    WHERE 
+                                    `id` = ?;";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$title, $about, $content, $id]);
+        return true;
+    }
+
+    public function deletePost($id)
+    {
+        $dateDeleted = date("Y/m/d H:i:s");
+        $query = "UPDATE `post` SET 
+                                    deleted_on = ?                                                                             
+                                    WHERE 
+                                    `id` = ?;";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$dateDeleted,$id]);
+    }
 }
