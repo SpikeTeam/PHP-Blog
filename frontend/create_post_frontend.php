@@ -78,10 +78,12 @@
 
                 <div class="col-md-4">
                     <section class="login-form">
-
+                        <?php if(isset($_SESSION['errorMsg'])): ?>
+                            <p class="error-msg"><?= $_SESSION['errorMsg']; unset($_SESSION['errorMsg']); ?></p>
+                        <?php endif; ?>
                         <form method="post">
-                            <div>
-                                Create Post
+                            <div class = " text-center" style="color:white">
+                                <h3>Create Post</h3>
                             </div>
                             <div>
                                 <input type="text" name="title" id="title" placeholder="Title" required
