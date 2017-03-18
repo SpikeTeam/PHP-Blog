@@ -1,3 +1,4 @@
+<?php /** @var $data \Models\AllPosts */ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,15 +13,15 @@
     <title>Home</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!--Login Form CSS/Update -->
-    <link href="css/login.css" rel="stylesheet">
+    <link href="frontend/css/login.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="frontend/css/clean-blog.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="frontend/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
           type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
@@ -54,16 +55,30 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="index_frontend.php">Home</a>
+                    <a href="./index.php">Home</a>
                 </li>
+                <?php if(!isset($_SESSION['id'])): ?>
+                    <li>
+                        <a href="./register.php">Sign up</a>
+                    </li>
+                    <li>
+                        <a href="./login.php">Sign in</a>
+                    </li>
+
+                <?php else: ?>
+                    <li>
+                        <a href="./profile.php">View Profile</a>
+                    </li>
+                    <li>
+                        <a href="./all_posts.php">All Posts</a>
+                    </li>
+                    <li>
+                        <a href="./create_post.php">Create Post</a>
+                    </li>
+
+                <?php endif; ?>
                 <li>
-                    <a href="registration_frontend.php">Sign up</a>
-                </li>
-                <li>
-                    <a href="index_frontend.php">Sign in</a>
-                </li>
-                <li>
-                    <a href="about_frontend.php">About</a>
+                    <a href="./about.php">About</a>
                 </li>
             </ul>
         </div>
@@ -74,27 +89,29 @@
 
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('img/home-bg2.jpg')">
+<header class="intro-header" style="background-image: url('frontend/img/home-bg2.jpg')">
     <div class="container">
 
         <div class="container">
 
             <div class="row" id="pwd-container">
                 <div class="col-md-4"></div>
-
-                <div class="col-md-4">
+                <?php if(!isset($_SESSION['id'])) : ?>
+                    <div class="col-md-4">
                     <section class="login-form">
 
                         <form method="post" action="#" role="login">
-                            <img src="img/icon-login.png" class="img-responsive" alt=""/>
+                            <img src="frontend/img/icon-login.png" class="img-responsive" alt=""/>
                             <input type="text" name="username" placeholder="Username" required
                                    class="form-control input-lg"/>
-                            <input type="password" class="form-control input-lg" id="password" placeholder="Password"
+                            <input type="password" name="password" class="form-control input-lg" id="password" placeholder="Password"
                                    required=""/>
-                            <div class="pwstrength_viewport_progress"></div>
-                            <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+                            <?php if(isset($_SESSION['error'])): ?>
+                                <p class="error-msg"><?= $_SESSION['error']; unset($_SESSION['error']); ?></p>
+                            <?php endif; ?>
+                            <button type="submit" name="login" class="btn btn-lg btn-primary btn-block">Sign in</button>
                             <div>
-                                <a href="registration_frontend.php">Create account</a>
+                                <a href="./register.php">Create account</a>
                                 </br>
                                 <a href="#">Reset password</a>
                             </div>
@@ -102,6 +119,7 @@
 
                     </section>
                 </div>
+                <?php endif; ?>
                 <div class="col-md-4"></div>
             </div>
         </div>
@@ -121,55 +139,24 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 1
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Subtitel/Content
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 2
-                    </h2>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 18, 2014</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 3
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Content
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</p>
-            </div>
-            <hr>
-            <div class="post-preview">
-                <a href="post_frontend.php">
-                    <h2 class="post-title">
-                        Heading 4
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Content
-                    </h3>
-                </a>
-                <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on July 8, 2014</p>
-            </div>
-            <hr>
+            <?php foreach ($data->getPosts() as $post): ?>
+                <div class="post-preview">
+                    <a href="post.php?postId=<?=htmlentities($post->getId());?>">
+                        <h2 class="post-title">
+                            <?= htmlentities($post->getTitle());?>
+                        </h2>
+                        <h3 class="post-subtitle">
+                            <?= htmlentities($post->getAbout()); ?>
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by <a href="#"> <?= htmlentities($post->getAuthor()); ?></a> on <?=htmlentities($post->getDatePosted())?></p>
+                </div>
+                <hr>
+            <?php endforeach; ?>
             <!-- Pager -->
             <ul class="pager">
                 <li class="next">
-                    <a href="#">Older Posts &rarr;</a>
+                    <a href="./all_posts.php">Older Posts &rarr;</a>
                 </li>
             </ul>
         </div>
@@ -208,17 +195,17 @@
 </footer>
 
 <!-- jQuery -->
-<script src="vendor/jquery/jquery.min.js"></script>
+<script src="frontend/vendor/jquery/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="frontend/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Contact Form JavaScript -->
-<script src="js/jqBootstrapValidation.js"></script>
-<script src="js/contact_me.js"></script>
+<script src="frontend/js/jqBootstrapValidation.js"></script>
+<script src="frontend/js/contact_me.js"></script>
 
 <!-- Theme JavaScript -->
-<script src="js/clean-blog.min.js"></script>
+<script src="frontend/js/clean-blog.min.js"></script>
 <!-- <script src="js/login.js"></script> -->
 
 </body>

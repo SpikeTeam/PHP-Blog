@@ -12,13 +12,13 @@
     <title>Clean Blog - About</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="frontend/css/clean-blog.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="frontend/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
           type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
@@ -52,16 +52,23 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="index_frontend.php">Home</a>
+                    <a href="./index.php">Home</a>
                 </li>
                 <li>
-                    <a href="about_frontend.php">About</a>
+                    <a href="./contact.php">Contact</a>
                 </li>
+
+                <?php if(!isset($_SESSION['id'])): ?>
+                    <li>
+                        <a href="./register.php">Sign up</a>
+                    </li>
+                    <li>
+                        <a href="./login.php">Sign in</a>
+                    </li>
+                <?php endif; ?>
+
                 <li>
-                    <a href="post_frontend.php">Sample Post</a>
-                </li>
-                <li>
-                    <a href="contact_frontend.php">Contact</a>
+                    <a href="./post.php?postId=1">Sample Post</a>
                 </li>
             </ul>
         </div>
@@ -72,7 +79,7 @@
 
 <!-- Page Header -->
 <!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('img/about-bg.jpg')">
+<header class="intro-header" style="background-image: url('frontend/img/about-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -130,17 +137,17 @@
 </footer>
 
 <!-- jQuery -->
-<script src="vendor/jquery/jquery.min.js"></script>
+<script src="frontend/vendor/jquery/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="frontend/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Contact Form JavaScript -->
-<script src="js/jqBootstrapValidation.js"></script>
-<script src="js/contact_me.js"></script>
+<script src="frontend/js/jqBootstrapValidation.js"></script>
+<script src="frontend/js/contact_me.js"></script>
 
 <!-- Theme JavaScript -->
-<script src="js/clean-blog.min.js"></script>
+<script src="frontend/js/clean-blog.min.js"></script>
 
 </body>
 

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Registration</title>
+    <title>Create Post</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -43,7 +43,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="index_frontend.php">Spike team</a>
+            <a class="navbar-brand" href="./index.php">Spike team</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -53,14 +53,13 @@
                     <a href="./index.php">Home</a>
                 </li>
                 <li>
-                    <a href="./register.php">Sign up</a>
-                </li>
-                <li>
-                    <a href="./login.php">Sign in</a>
-                </li>
-                <li>
                     <a href="./about.php">About</a>
                 </li>
+                <?php if(isset($_SESSION['id'])): ?>
+                    <li>
+                        <a href="./logout.php">Logout</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -74,60 +73,30 @@
         <div class="container">
 
             <div class="row" id="pwd-container">
-                <div class="col-md-3"></div>
+                <div class="col-md-4"></div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <section class="login-form">
-
-                        <form method="post" action="#" role="login" id="registrationForm" enctype="multipart/form-data">
-                            <img src="frontend/img/icon-login.png" class="img-responsive" alt=""/>
-                            <div>
-                                <?php if(isset($_SESSION['errorMsg'])): ?>
-                                    <p class="error-msg"><?= $_SESSION['errorMsg']; unset($_SESSION['errorMsg']); ?></p>
-                                <?php endif; ?>
+                        <?php if(isset($_SESSION['errorMsg'])): ?>
+                            <p class="error-msg"><?= $_SESSION['errorMsg']; unset($_SESSION['errorMsg']); ?></p>
+                        <?php endif; ?>
+                        <form method="post">
+                            <div class = " text-center" style="color:white">
+                                <h3>Create Post</h3>
                             </div>
                             <div>
-                                <input type="text" name="username" id="username" placeholder="Username" required
-                                   class="form-control input-lg"/>
-                                <p id="usernameValid" class="error-msg"></p>
+                                <input type="text" name="title" id="title" placeholder="Title" required
+                                       class="form-control input-lg"/>
                             </div>
                             <div>
-                                <input type="password" name="password" class="form-control input-lg" id="password"
-                                   placeholder="Password"  required />
-                                <p id="passwordValid" class="error-msg"></p>
+                                <input type="text" name="about" class="form-control input-lg" id="about"
+                                       placeholder="Intro"  required />
                             </div>
                             <div>
-                                <input type="password" name="passwordConfirm" class="form-control input-lg"
-                                   id="passwordConf"  placeholder="Password Confirm"  required />
-                                <p id="passwordConfirmValid" class="error-msg"></p>
+                                <textarea name="content" id="content" cols="20" rows="10"
+                                          class="form-control input-lg" placeholder="Content"></textarea>
                             </div>
-                            <div>
-                                <input type="text" name="firstName" class="form-control input-lg"
-                                   id="firstName"  placeholder="First name"  required />
-                            </div>
-                            <div>
-                                <input type="text" name="lastName" class="form-control input-lg"
-                                   id="lastName"  placeholder="Last name"  required />
-                            </div>
-                            <div>
-                                <p id="namesValid" class="error-msg"></p>
-                            </div>
-                            <div>
-                                <textarea name="personalInfo" id="personalInfo" cols="30" rows="10"
-                                      class="form-control input-lg" placeholder="Personal Info"></textarea>
-                            </div>
-                            <div>
-                                <input type="email" name="email" class="form-control input-lg"
-                                   id="email" placeholder="Email" required />
-                                <p id="emailValid" class="error-msg"></p>
-                            </div>
-                            <div>
-                                <label for="avatar">Upload avatar: </label>
-                            <input type="file" name="avatar" id="avatar" accept="image/jpeg,image/png" />
-                            </div>
-
-                            <div class="pwstrength_viewport_progress"></div>
-                            <input type="submit" name="register" class="btn btn-lg btn-primary btn-block" value="Sign up"/>
+                            <button type="submit" name="createPost" class="btn btn-md btn-primary btn-block">Add</button>
                         </form>
 
                     </section>
@@ -146,8 +115,5 @@
         </div>
     </div>
 </header>
-
-<script src="frontend/js/registration.js"></script>
-
 </body>
 </html>
