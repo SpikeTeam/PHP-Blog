@@ -1,12 +1,12 @@
 
 $(function () {
     let everythingValid = true;
-
+    let regexBlind = /[ ]/;
 
     $('#username').on('keyup', function () {
         let username = $('#username').val();
 
-        if(username.length < 5){
+        if((username.length < 5 || username.length > 15)|| username.match(regexBlind)){
             $('#usernameValid').text("The username must be between 5 and 15 symbols");
             everythingValid = false;
         } else {
@@ -18,7 +18,7 @@ $(function () {
     $('#password').on('keyup', function () {
        let password =  $('#password').val();
 
-        if(password.length < 5){
+        if(password.length < 5 || password.match(regexBlind)){
             $('#passwordValid').text("The password must be at least 6 symbols");
             everythingValid = false;
         } else {
@@ -51,6 +51,19 @@ $(function () {
            $('#emailValid').text('');
            everythingValid = true;
        }
+    });
+
+    $('#firstName, #lastName').on('keyup', function () {
+        let firstName = $('#firstName').val();
+        let lastName = $('#lastName').val();
+
+        if(firstName.match(regexBlind) || lastName.match(regexBlind)){
+            $('#namesValid').text('Please enter valid names.');
+            everythingValid = false;
+        } else {
+            $('#namesValid').text('');
+            everythingValid = true;
+        }
     });
 
     $('#registrationForm').on('submit', function () {
